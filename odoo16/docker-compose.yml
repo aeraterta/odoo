@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    user: root
+    container_name: odoo16-db
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    restart: always
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+    networks:
+      - odoo-network
+    ports:
+      - "5433:5432"  # Map port 5433 on the host to port 5432 in the container
+
+  odoo16:
+    image: odoo:16
+    user: root
+    container_name: odoo16-web
+    depends_on:
+      - db
+    ports:
+      - "8070:8069"  # Map port 8070 on the host to port 8069 in the container
+      - "8073:8072"  # Map port 8073 on the host to port 8072 in the container (for longpolling)
+    environment:
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo
+    volumes:
+      - ./addons:/mnt/extra-addons
+      - ./etc:/etc/odoo
+    restart: always
+    networks:
+      - odoo-network
+
+networks:
+  odoo-network:
+    driver: bridge
