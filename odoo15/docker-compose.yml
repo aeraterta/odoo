@@ -14,6 +14,8 @@ services:
       - ./postgresql:/var/lib/postgresql/data
     networks:
       - odoo-network
+    ports:
+      - "5432:5432"  # Expose port 5432 to the host
 
   odoo15:
     image: odoo:15

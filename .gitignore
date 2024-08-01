@@ -1,0 +1,8 @@
+# Ignore all directories named addons anywhere in the project
+**/addons/
+
+# Ignore all directories named etc anywhere in the project
+**/etc/
+
+# Ignore all directories named postgresql anywhere in the project
+**/postgresql/
